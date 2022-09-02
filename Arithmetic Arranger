@@ -2,7 +2,7 @@
 # So, This was my first coding project after finishing all lessons in Scientific Computing with Python and improving
 # myself from all other sources from internet. I am so happy that my code worked :) after 5 days hard work but I am not
 # sure if it is the most efficient way. I would really appreciate it if you give me some feedback about my code to
-# keep myself imrpving. Thank you so much, Ersin....
+# keep myself imrpoving. Thank you so much, Ersin....
 
 import re
 numlist = list()
