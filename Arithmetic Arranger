@@ -1,141 +1,54 @@
-# I started to learn Python two months ago and I am working on it around 5 h per day and 6 days in a week.
-# So, This was my first coding project after finishing all lessons in Scientific Computing with Python and improving
-# myself from all other sources from internet. I am so happy that my code worked :) after 5 days hard work but I am not
-# sure if it is the most efficient way. I would really appreciate it if you give me some feedback about my code to
-# keep myself imrpoving. Thank you so much, Ersin....
+def arithmetic_arranger(problems, solve=False):
+    if len(problems) > 5:
+        return "Error: Too many problems."
 
-import re
-numlist = list()
-count = 0
+    first = ""
+    second = ""
+    lines = ""
+    totals = ""
 
-# getting input from user
-while True:
-    try:
-        num1 = int(input(f"Enter the 1. number of ({count+1}). problem: "))
-        if 10000 <= num1:
-            print("Error: Numbers cannot be more than four digits.")
-            continue
-        elif not str(num1).isnumeric():
-            print("Error: Numbers must only contain digits.")
-            continue
+    for problem in problems:
+        if not (problem.split(" ")[0]).isnumeric():
+            return "Error: Numbers must only contain digits."
+        elif not (problem.split(" ")[2]).isnumeric():
+            return "Error: Numbers must only contain digits."
+        elif problem.split(" ")[1] not in ["+", "-"]:
+            return "Error: Operator must be '+' or '-'."
+        elif len((problem.split(" ")[0])) >= 5 or len((problem.split(" ")[2])) >= 5:
+            return "Error: Numbers cannot be more than four digits."
         else:
-            num1 = num1
-    except:
-        print("Error: Numbers must only contain digits.")
-        continue
+            first_number = problem.split(" ")[0]
+            second_number = problem.split(" ")[2]
+            operator = problem.split(" ")[1]
 
-    while True:
-        op = input("Enter an operator: ")
-        if op not in ["+", "-"]:
-            print("Error: Operator must be '+' or '-'.")
-            continue
+        sum_ = ""
+        if operator == "+":
+            sum_ = str(int(first_number) + int(second_number))
+        elif operator == "-":
+            sum_ = str(int(first_number) - int(second_number))
+
+        length = max(len(first_number), len(second_number)) + 2
+        top = str(first_number).rjust(length)
+        bottom = operator + str(second_number).rjust(length - 1)
+        line = ""
+        all_string = str(sum_).rjust(length)
+        
+        for s in range(length):
+            line += "-"
+
+        if problem != problems[-1]:
+            first += top + "    "
+            second += bottom + "    "
+            lines += line + "    "
+            totals += all_string + "    "
         else:
-            op = op
-            break
+            first += top
+            second += bottom
+            lines += line
+            totals += all_string
 
-    while True:
-        try:
-            num2 = int(input(f"Enter the 2. number of ({count + 1}). problem: "))
-            if 10000 <= num2:
-                print("Error: Numbers cannot be more than four digits.")
-                continue
-            elif not str(num2).isnumeric():
-                print("Error: Numbers must only contain digits.")
-                continue
-            else:
-                num2 = num2
-                break
-        except:
-            print("Error: Numbers must only contain digits.")
-            continue
-
-    finish = input("Calculate? (True/False): ")
-    str_p = str(num1)+op+str(num2)
-    numlist.append(str_p)
-    count = count + 1
-    if finish == "True":
-        break
-    if count >= 5:
-        print("Error: Too many problems.")
-        print("Calculating results...")
-        break
-
-# calculation and findig all results in terms of different operand options
-result_list = list()
-max_widths = list()
-ops = list()
-num1s = list()
-num2s = list()
-operands_list = list()
-operands_1st = list()
-operands_2nd = list()
-
-
-def arithmetic_arranger(numlist, finish):
-    for i in numlist:
-        nums = re.findall("[0-9]+", i)
-        nums_int = [int(item) for item in nums]
-        if "+" in i:
-            result = nums_int[0]+nums_int[1]
-        else:
-            result = nums_int[0]-nums_int[1]
-        result_list.append(result)
-        operands_list.append(nums)
-
-# finding the lists of first and second numbers
-    for i in operands_list:
-        item1 = i[0]
-        item2 = i[1]
-        operands_1st.append(item1)
-        operands_2nd.append(item2)
-
-# finding the max widths: longest of two operands+space+operator
-    a = -1
-    while a + 1 < count:
-        a = a + 1
-        if int(operands_1st[a]) >= int(operands_2nd[a]):
-            w = len(operands_1st[a]) + 2
-        else:
-            w = len(operands_2nd[a]) + 2
-        max_widths.append(w)
-
-# finding the operators
-    for o in numlist:
-        r = re.findall("[0-9]([+-])", o)
-        ops.append(r)
-
-# printing the lines
-    # printing first line
-    ind = -1
-    while ind+1 < count:
-        ind = ind + 1
-        print(str(operands_1st[ind]).rjust(max_widths[ind]), "   ", end="")
-    print("\n")
-
-    # printing second line
-    new_ops = list()
-    for i in ops:
-        for x in i:
-            new_ops.append(x)
-    ind = -1
-    while ind+1 < count:
-        ind = ind + 1
-        print("".join(new_ops[ind]), str(operands_2nd[ind]).rjust(max_widths[ind]-2), "   ", end="")
-    print("\n")
-
-    # printing the dashes
-    ind = -1
-    while ind + 1 < count:
-        ind = ind + 1
-        print("_"*max_widths[ind], "   ", end="")
-    print("\n")
-
-    # printing the results line
-    ind = -1
-    while ind+1 < count:
-        ind = ind + 1
-        print(str(result_list[ind]).rjust(max_widths[ind]), "   ", end="")
-    print("\n")
-
-
-arithmetic_arranger(numlist, finish)
+    if solve:
+        string = first + "\n" + second + "\n" + lines + "\n" + totals
+    else:
+        string = first + "\n" + second + "\n" + lines
+    return string
